@@ -7,18 +7,22 @@
    <body>
       <script type="module">
          import init, {BF} from "./pkg/brainfuck.js";
-         let wasm = await init()
+         let wasm = await init();
 
-         window.BF = BF
-         window.bf = BF.new()
+         window.BF = BF;
+         window.bf = BF.new();
 
-         document.getElementById("comp").addEventListener('click', () => {
+         [["print", () => {window.bf.print()}],["step", () => window.bf.step()], ["comp", () => {
             window.bf.set_code(document.getElementById("code").value);
+         }]].forEach((el) => {
+            document.getElementById(el[0]).addEventListener('click', el[1])
          })
 
       </script>
       <textarea name="" id="code" cols="100" rows="10"></textarea>
       <div>
+         <button id="step">step</button>
+         <button id="print">print</button>
          <button id="comp">compile</button>
       </div>
    </body>
