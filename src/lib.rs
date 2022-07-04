@@ -24,15 +24,26 @@ impl BF {
          memory_counter: 0
       }
    }
-
-   pub fn set_code(&mut self, c: String) {
-      log(&format!("Writing code: \n{}.\n\nto program memory.", &c.replace(" ", "")));
+    
+   pub fn set_code(&mut self, mut c: String) {
+      c = c.replace(" ", "");
+      c = c.replace("\n", "");
+      c = c.replace("\t", "");
+      log(&format!("Writing code: \n{}.\n\nto program memory.", &c));
       self.code = c.into_bytes();
       self.code_len = self.code.len() as u8;
    }
 
    pub fn print(&self) {
       log(&format!("PC: {}/{}, Memory: \n{:?}", self.program_counter, self.code_len, self.memory));
+   }
+
+   pub fn get_state(&self) -> String {
+      format!("{{\"program_counter\": {}, \"memory\": {:?}, \"memory_counter\": {}}}", 
+         self.program_counter, 
+         self.memory,
+         self.memory_counter,
+      )
    }
 
    pub fn step(&mut self) {
