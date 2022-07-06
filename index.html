@@ -8,8 +8,9 @@
 
 <body>
    <script type="module">
-      import init, {BF} from "./pkg/brainfuck.js";
+      import init, {BF, run} from "./pkg/brainfuck.js";
       let wasm = await init();
+      run()
 
       window.BF = BF;
       window.bf = BF.new();
