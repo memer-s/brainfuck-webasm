@@ -4,42 +4,69 @@
 <head>
    <meta charset="utf-8">
    <title>hello-wasm example</title>
+   <link rel="stylesheet" href="style.css">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
    <script type="module">
       import init, {BF, run} from "./pkg/brainfuck.js";
       let wasm = await init();
-      run()
+      run();
 
       window.BF = BF;
       window.bf = BF.new();
 
       function button(id, func) {
-         document.getElementById(id).addEventListener(func);
+         document.getElementById(id).addEventListener('click', func);
       }
 
       button("sp", () => {
-         window.bf.step(); document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
+         window.bf.step(); 
+         document.getElementById("state").innerText = bf.get_state();
       })
 
       button("print", () => window.bf.print())
-      button("print", () => window.bf.step())
-      button("print", () => window.bf.set_code(document.getElementById("code").value))
-      button("print", () => window.bf.print())
-      button("print", () => window.bf.print())
+      button("step", () => window.bf.step())
+      button("comp", () => window.bf.set_code(document.getElementById("code").value))
 
    </script>
-   <textarea name="" id="code" cols="100" rows="10"></textarea>
-   <div>
-      <button id="sp">step + print</button>
-      <button id="step">step</button>
-      <button id="print">print</button>
-      <button id="comp">compile</button>
+   <div class="mid">
+      <p class="label">brainfuck</p>
+      <textarea name="" id="code" cols="10" rows="10"></textarea>
+      <div>
+         <button id="sp">step + print</button>
+         <button id="step">step</button>
+         <button id="print">print</button>
+         <button id="comp">compile</button>
+      </div>
+      <code id="state"></code>
+      <br>
+      <p class="label">Program Output</p>
+      <code id="cout"></code>
    </div>
-   <pre id="state"></pre>
-   <br>
-   <pre id="cout"></pre>
 </body>
 
 </html>

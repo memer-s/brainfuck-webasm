@@ -6,6 +6,10 @@ pub fn log(s: &String) {
    web_sys::console::log_1(&s[..].into())
 }
 
+pub fn err(s: &String) {
+   web_sys::console::error_1(&s[..].into())
+}
+
 #[wasm_bindgen]
 pub fn run() {
     panic::set_hook(Box::new(console_error_panic_hook::hook))
@@ -143,7 +147,13 @@ impl BF {
                let doc = web_sys::window().unwrap().document().unwrap();
                let el = doc.get_element_by_id("cout").unwrap();
                let text = el.text_content().unwrap();
-               el.set_inner_html(&format!("{}{}",text,std::str::from_utf8(&[self.memory[self.memory_counter as usize]]).unwrap()));
+               if self.memory[self.memory_counter as usize].is_ascii() {
+                   el.set_inner_html(
+                       &format!("{}{}",text,std::str::from_utf8(&[self.memory[self.memory_counter as usize]]).unwrap())
+                       );
+               } else {
+                   err(&format!("Could not convert current memory cell to ascii. [{}] is not valid ascii.", self.memory[self.memory_counter as usize]))
+               }
                self.program_counter+=1
             }
             _ => {
