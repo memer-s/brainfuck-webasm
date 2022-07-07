@@ -15,14 +15,19 @@
       window.BF = BF;
       window.bf = BF.new();
 
-      [
-         ["sp", () => {window.bf.step(); document.getElementById("state").innerText = bf.get_state();}],
-         ["print", () => window.bf.print()],
-         ["step", () => window.bf.step()],
-         ["comp", () => window.bf.set_code(document.getElementById("code").value)]
-      ].forEach((el) => {
-         document.getElementById(el[0]).addEventListener('click', el[1])
+      function button(id, func) {
+         document.getElementById(id).addEventListener(func);
+      }
+
+      button("sp", () => {
+         window.bf.step(); document.getElementById("state").innerText = bf.get_state();
       })
+
+      button("print", () => window.bf.print())
+      button("print", () => window.bf.step())
+      button("print", () => window.bf.set_code(document.getElementById("code").value))
+      button("print", () => window.bf.print())
+      button("print", () => window.bf.print())
 
    </script>
    <textarea name="" id="code" cols="100" rows="10"></textarea>
@@ -33,6 +38,8 @@
       <button id="comp">compile</button>
    </div>
    <pre id="state"></pre>
+   <br>
+   <pre id="cout"></pre>
 </body>
 
 </html>
