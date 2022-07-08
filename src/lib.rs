@@ -50,6 +50,7 @@ impl BF {
    // it then parses the string into a Vector<u8>.
    // The function also sets the program_counter and the 
    // memory_counter to 0, and it initializes the memory: [u8; 256].
+   // Check that all loops are complete, i.e. check that all [ has a ].
    pub fn set_code(&mut self, c: String) {
       self.code = vec![];
       let mut loop_count = 0;
@@ -99,7 +100,7 @@ impl BF {
    // This function gets the internal state of the interpreter
    // as a stringified JSON object.
    pub fn get_state(&self) -> String {
-      format!("{{\n \"program_counter\": {},\n \"memory\": {:?},\n \"memory_counter\": {},\n}}", 
+      format!("{{\n \"program_counter\": {},\n \"memory\": {:?},\n \"memory_counter\": {}}}", 
          self.program_counter, 
          self.memory,
          self.memory_counter,
