@@ -5,13 +5,14 @@
 body {
    background-color: #F3F3F3;
    display: flex;
-   justify-content: center;
+   align-items: center;
    font-family: 'IBM Plex Sans', sans-serif;
+   flex-direction: column;
 }
 
 textarea {
    font-family: 'IBM Plex Mono';
-   padding: 7px;
+   padding: 10px 10px;
    font-size: 18px;
    resize: none;
    border: 0;
@@ -21,7 +22,29 @@ textarea {
    width: 100%;
 }
 
-code {
+textarea:focus {
+   outline: none;
+}
+
+h1 {
+   text-align: center;
+   margin-bottom: 50px;
+   margin-top: 30px;
+}
+
+.title {
+   display: flex;
+   justify-content: space-between;
+}
+
+.title-cont {
+   display: flex;
+   line-height: 1;
+   height: fit-content;
+}
+
+code, pre {
+   display: block;
    box-shadow: 0px 16px 20px rgba(0, 0, 0, 0.03);
    border-radius: 10px;
 }
@@ -35,21 +58,44 @@ code {
 }
 
 .mid {
-   width: 800px;
+   max-width: 800px;
+   width: 90vw;
+}
+
+#memory {
+   display: block;
+   width: 100%;
+   margin-bottom: 50px;
+}
+
+.cell {
+   display: block;
+   box-sizing: border-box;
+   text-align: center;
+   background-color: #fff;
+   width: 40px;
+   height: 40px;
+   margin: 5px;
+   padding-top: 10px;
+   border-radius: 7px;
+   font-family: 'IBM Plex Mono';
+}
+
+.row {
+   display: flex;
+   margin-bottom: 3px;
 }
 
 #cout {
+   white-space: pre-wrap;
    box-sizing: border-box;
    font-size: 18px;
-   word-wrap: normal;
    font-weight: 400;
    padding: 12px 14px;
    color: #d3d3d3;
    font-family: 'IBM Plex Mono';
    width: 100%;
-   height: 140px;
+   min-height: 140px;
    background-color: #151515;
    box-shadow: 0px 16px 20px rgba(0, 0, 0, 0.1);
 }
-
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&display=swap');

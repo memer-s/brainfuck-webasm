@@ -33,7 +33,6 @@ struct BF {
    program_counter: u8,
    memory: [u8; 256],
    memory_counter: u8,
-   stack: Vec<u8>,
 }
 
 #[wasm_bindgen]
@@ -44,7 +43,6 @@ impl BF {
          program_counter: 0,
          memory: [0; 256],
          memory_counter: 0,
-         stack: vec![],
       }
    }
    
@@ -52,28 +50,48 @@ impl BF {
    // it then parses the string into a Vector<u8>.
    // The function also sets the program_counter and the 
    // memory_counter to 0, and it initializes the memory: [u8; 256].
-   pub fn set_code(&mut self, mut c: String) {
+   pub fn set_code(&mut self, c: String) {
       self.code = vec![];
+      let mut loop_count = 0;
+      let mut loop_error = false;
       c.into_bytes().iter().for_each(|char| {
          match char {
-             b'+' => self.code.push(*char),
-             b'-' => self.code.push(*char),
-             b'>' => self.code.push(*char),
-             b'<' => self.code.push(*char),
-             b'[' => self.code.push(*char),
-             b']' => self.code.push(*char),
-             b'.' => self.code.push(*char),
-             _ => {}
+            b'+' => self.code.push(*char),
+            b'-' => self.code.push(*char),
+            b'>' => self.code.push(*char),
+            b'<' => self.code.push(*char),
+            b'[' => {
+               self.code.push(*char);
+               loop_count+=1;
+            },
+            b']' => {
+               if loop_count == 0  {
+                  loop_error = true;
+               }
+               self.code.push(*char);
+               loop_count-=1;
+            },
+            b'.' => self.code.push(*char),
+            _ => {}
          }
       });
-      log(&format!("Writing code: \n{:?}.\n\nto program memory", self.code));
+      if loop_error {
+         err(&"Could not compile brainfuck,\nFound ] without matching [.".to_string());
+      }
+      else if loop_count == 0 {
+         log(&format!("Writing code: \n{:?}.\n\nto program memory", self.code));
+      }
+      else {
+         err(&format!("Could not compile brainfuck, found {} unmatched loops", loop_count));
+         self.code = vec![];
+      }
       self.program_counter = 0;
       self.memory = [0; 256];
       self.memory_counter = 0;
    }
 
    // This function prints the internal state 
-   // of the interpreter to the JS console
+   // of the interpreter to the js console
    pub fn print(&self) {
       log(&format!("PC: {}/{}, Memory: \n{:?}", self.program_counter, self.code.len(), self.memory));
    }
@@ -81,19 +99,19 @@ impl BF {
    // This function gets the internal state of the interpreter
    // as a stringified JSON object.
    pub fn get_state(&self) -> String {
-      format!("{{\n \"program_counter\": {},\n \"memory\": {:?},\n \"memory_counter\": {},\n \"stack\": {:?}\n}}", 
+      format!("{{\n \"program_counter\": {},\n \"memory\": {:?},\n \"memory_counter\": {},\n}}", 
          self.program_counter, 
          self.memory,
          self.memory_counter,
-         self.stack
       )
    }
    
    // This runs the code at the program_counter. And increments the program_counter.
    // The "," operation is not yet implemented.
-   pub fn step(&mut self) {
+   pub fn step(&mut self) -> bool {
       if self.code.len() == self.program_counter as usize {
-         log(&String::from("EOF!"))
+         log(&String::from("EOF!"));
+         false
       } else {
          match self.code[self.program_counter as usize] {
             b'+' => {
@@ -149,10 +167,10 @@ impl BF {
                               self.program_counter = self.program_counter - i as u8;
                               break;
                            }
-                        }
+                        },
                         b']' => {
                            depth += 1;
-                        }
+                        },
                         _ => {}
                      }
                      i+=1;
@@ -171,14 +189,24 @@ impl BF {
                        &format!("{}{}",text,std::str::from_utf8(&[self.memory[self.memory_counter as usize]]).unwrap())
                        );
                } else {
-                   err(&format!("Could not convert current memory cell to ascii. [{}] is not valid ascii.", self.memory[self.memory_counter as usize]))
+                   err(&format!("Could not convert current memory cell to ascii. [{}] is not valid ASCII.", self.memory[self.memory_counter as usize]));
                }
-               self.program_counter+=1
-            }
+               self.program_counter+=1;
+            },
             _ => {
                log(&format!("Could not Interpret character at index: {}", self.memory_counter));
             }
-         };
+         }
+         true
       }
+   }
+
+   pub fn steps(&mut self, steps: usize) -> bool {
+      for _ in 0..steps {
+         if !self.step() {
+            return false;
+         }
+      }
+      true
    }
 }

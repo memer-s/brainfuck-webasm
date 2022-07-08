@@ -11,41 +11,41 @@
 </head>
 
 <body>
-   <script type="module">
-      import init, {BF, run} from "./pkg/brainfuck.js";
-      let wasm = await init();
-      run();
-
-      window.BF = BF;
-      window.bf = BF.new();
-
-      function button(id, func) {
-         document.getElementById(id).addEventListener('click', func);
-      }
-
-      button("sp", () => {
-         window.bf.step(); 
-         document.getElementById("state").innerText = bf.get_state();
-      })
-
-      button("print", () => window.bf.print())
-      button("step", () => window.bf.step())
-      button("comp", () => window.bf.set_code(document.getElementById("code").value))
-
-   </script>
+   <script type="module" src="main.js"></script>
    <div class="mid">
-      <p class="label">brainfuck</p>
-      <textarea name="" id="code" cols="10" rows="10"></textarea>
-      <div>
-         <button id="sp">step + print</button>
-         <button id="step">step</button>
-         <button id="print">print</button>
-         <button id="comp">compile</button>
+      <h1>Brainfuck interpreter</h1>
+      <div class="title">
+         <div class="title-cont">
+            <p class="label">Memory</p>
+         </div>
       </div>
+      <div id="memory">
+
+      </div>
+      <div></div>
+      <div class="title">
+         <div class="title-cont">
+            <p class="label">Brainfuck code</p>
+         </div>
+         <div class="title-cont">
+            <button id="sp">step + print</button>
+            <button id="step">step</button>
+            <button id="print">print</button>
+            <button id="comp">compile</button>
+         </div>
+      </div>
+      <textarea name="" id="code" cols="10" rows="10"></textarea>
       <code id="state"></code>
       <br>
-      <p class="label">Program Output</p>
-      <code id="cout"></code>
+      <div class="title">
+         <div class="title-cont">
+            <p class="label">Program Output</p>
+         </div>
+         <div class="title-cont">
+            <button id="clear">Clear</button>
+         </div>
+      </div>
+      <pre id="cout"></pre>
    </div>
 </body>
 
