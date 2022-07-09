@@ -1,5 +1,5 @@
 // Author: github.com/memer-s.
-// Check out the wikipedia article on brainfuck if you are interested.
+// Check out the wikipedia article on brainfuck if you are& interested.
 
 use wasm_bindgen::prelude::*;
 extern crate console_error_panic_hook;
@@ -13,6 +13,14 @@ pub fn log(s: &String) {
 
 pub fn err(s: &String) {
    web_sys::console::error_1(&s[..].into())
+}
+
+pub fn from_arr_to_ascii(arr: &[u8]) -> String {
+    let mut s = String::new();
+    std::str::from_utf8(&arr).unwrap().chars().for_each(|c| {
+        s.push(c);
+    });
+    s
 }
 
 // -------------------------------
@@ -80,7 +88,7 @@ impl BF {
          err(&"Could not compile brainfuck,\nFound ] without matching [.".to_string());
       }
       else if loop_count == 0 {
-         log(&format!("Writing code: \n{:?}.\n\nto program memory", self.code));
+         log(&format!("Writing code: \n\n{}.\n\nto program memory", from_arr_to_ascii(&self.code)));
       }
       else {
          err(&format!("Could not compile brainfuck, found {} unmatched loops", loop_count));
