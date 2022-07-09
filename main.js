@@ -170,3 +170,22 @@ window.addEventListener("resize", renderMemory)
 
 // Remove the loading screen.
 document.getElementById("cover").remove()
+
+// Keybinds, because why not.
+window.addEventListener("keydown", (k) => {
+   if(k.ctrlKey) {
+      switch(k.key) {
+         case "b":
+            document.getElementById("comp").click();
+            k.preventDefault();
+            break;
+         case "s":
+            document.getElementById("start").click();
+            k.preventDefault();
+            break;
+         case " ":
+            document.getElementById("sp").click();
+            break;
+      }
+   }
+})
