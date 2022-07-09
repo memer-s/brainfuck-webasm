@@ -3,7 +3,7 @@
 
 <head>
    <meta charset="utf-8">
-   <title>hello-wasm example</title>
+   <title>Brainfuck Interpreter</title>
    <link rel="stylesheet" href="style.css">
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,12 +11,31 @@
 </head>
 
 <body>
+   <div id="cover" style=" 
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #f3f3f3;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      color: #555;"
+   >
+   <p>Loading</p>
+   </div>
    <script type="module" src="main.js"></script>
    <div class="mid">
       <h1>Brainfuck interpreter</h1>
       <div class="title">
          <div class="title-cont">
             <p class="label">Memory</p>
+         </div>
+         <div class="title-cont">
+            <p class="label" id="loc">0 - 32</p>
          </div>
       </div>
       <div id="pc"></div>
@@ -30,10 +49,13 @@
          </div>
          <div class="title-cont">
             <button id="sp">Step</button>
+            <button id="stop" style="display: none;">Stop</button>
+            <button id="start">Start</button>
             <button id="comp">Compile</button>
          </div>
       </div>
-      <textarea name="" id="code" cols="10" rows="10"></textarea>
+      <textarea name="" id="code" cols="10" rows="10">
+      </textarea>
       <code id="state"></code>
       <br>
       <div class="title">

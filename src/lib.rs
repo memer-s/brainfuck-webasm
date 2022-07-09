@@ -30,9 +30,9 @@ pub fn run() {
 #[wasm_bindgen]
 struct BF {
    code: Vec<u8>,
-   program_counter: u8,
-   memory: [u8; 256],
-   memory_counter: u8,
+   program_counter: u32,
+   memory: [u8; 30000],
+   memory_counter: u32,
 }
 
 #[wasm_bindgen]
@@ -41,7 +41,7 @@ impl BF {
       BF {
          code: vec![],
          program_counter: 0,
-         memory: [0; 256],
+         memory: [0; 30000],
          memory_counter: 0,
       }
    }
@@ -87,7 +87,7 @@ impl BF {
          self.code = vec![];
       }
       self.program_counter = 0;
-      self.memory = [0; 256];
+      self.memory = [0; 30000];
       self.memory_counter = 0;
    }
 
@@ -116,11 +116,11 @@ impl BF {
       } else {
          match self.code[self.program_counter as usize] {
             b'+' => {
-               self.memory[self.memory_counter as usize]+=1;
+               self.memory[(self.memory_counter as usize)%30000]+=1;
                self.program_counter+=1;
             },
             b'-' => {
-               self.memory[self.memory_counter as usize]-=1;
+               self.memory[(self.memory_counter as usize)%30000]-=1;
                self.program_counter+=1;
             },
             b'>' => {
@@ -132,7 +132,7 @@ impl BF {
                self.program_counter+=1;
             }
             b'[' => {
-               if self.memory[self.memory_counter as usize] == 0 {
+               if self.memory[(self.memory_counter as usize)%30000] == 0 {
                   let mut i = 0;
                   let mut depth = 0;
                   loop {
@@ -143,7 +143,7 @@ impl BF {
                         b']' => {
                            depth -= 1;
                            if depth == 0 {
-                              self.program_counter = self.program_counter + i as u8;
+                              self.program_counter = self.program_counter + i as u32;
                               break;
                            }
                         }
@@ -157,7 +157,7 @@ impl BF {
                }
             },
             b']' => {
-               if self.memory[self.memory_counter as usize] != 0 {
+               if self.memory[(self.memory_counter as usize)%30000] != 0 {
                   let mut i = 0;
                   let mut depth = 0;
                   loop {
@@ -165,7 +165,7 @@ impl BF {
                         b'[' => {
                            depth -= 1;
                            if depth == 0 {
-                              self.program_counter = self.program_counter - i as u8;
+                              self.program_counter = self.program_counter - i as u32;
                               break;
                            }
                         },
@@ -185,17 +185,17 @@ impl BF {
                let doc = web_sys::window().unwrap().document().unwrap();
                let el = doc.get_element_by_id("cout").unwrap();
                let text = el.text_content().unwrap();
-               if self.memory[self.memory_counter as usize].is_ascii() {
+               if self.memory[(self.memory_counter as usize)%30000].is_ascii() {
                    el.set_inner_html(
-                       &format!("{}{}",text,std::str::from_utf8(&[self.memory[self.memory_counter as usize]]).unwrap())
+                       &format!("{}{}",text,std::str::from_utf8(&[self.memory[(self.memory_counter as usize)%30000]]).unwrap())
                        );
                } else {
-                   err(&format!("Could not convert current memory cell to ascii. [{}] is not valid ASCII.", self.memory[self.memory_counter as usize]));
+                   err(&format!("Could not convert current memory cell to ascii. [{}] is not valid ASCII.", self.memory[(self.memory_counter as usize)%30000]));
                }
                self.program_counter+=1;
             },
             _ => {
-               log(&format!("Could not Interpret character at index: {}", self.memory_counter));
+               log(&format!("Could not Interpret character at index: {}", self.memory_counter%30000));
             }
          }
          true
