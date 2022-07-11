@@ -54,7 +54,7 @@ impl BF {
       }
    }
    
-   // This function is called with the code passed as a string,
+   /// This function is called with the code passed as a string,
    // it then parses the string into a Vector<u8>.
    // The function also sets the program_counter and the 
    // memory_counter to 0, and it initializes the memory: [u8; 256].
@@ -81,6 +81,7 @@ impl BF {
                loop_count-=1;
             },
             b'.' => self.code.push(*char),
+            b',' => self.code.push(*char),
             _ => {}
          }
       });
@@ -99,14 +100,14 @@ impl BF {
       self.memory_counter = 0;
    }
 
-   // This function prints the internal state 
-   // of the interpreter to the js console
+   /// This function prints the internal state 
+   /// of the interpreter to the js console
    pub fn print(&self) {
       log(&format!("PC: {}/{}, Memory: \n{:?}", self.program_counter, self.code.len(), self.memory));
    }
 
-   // This function gets the internal state of the interpreter
-   // as a stringified JSON object.
+   /// This function gets the internal state of the interpreter
+   /// as a stringified JSON object.
    pub fn get_state(&self) -> String {
       format!("{{\n \"program_counter\": {},\n \"memory\": {:?},\n \"memory_counter\": {}}}", 
          self.program_counter, 

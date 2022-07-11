@@ -103,6 +103,7 @@ button("start", () => {
    }, window.delay)
 })
 
+// Stop the start loop.
 button("stop", () => {
    document.getElementById("start").style = 'display: inline;';
    document.getElementById("stop").style = 'display: none;';
