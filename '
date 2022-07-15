@@ -27,12 +27,11 @@ const programs = [
 document.getElementById("code").value = programs[Math.floor(Math.random()*programs.length)]
 
 
-let savedPrograms = localStorage.getItem("programs");
+let savedPrograms;
 
 // Check if there exists any saved programs.
-if(savedPrograms) {
-   // TODO
-   // Storage
+if() {
+
 }
 // Initializes brainfuck.
 // Setting instance to window for ease of access in the js console.

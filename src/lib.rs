@@ -1,5 +1,5 @@
 // Author: github.com/memer-s.
-// Check out the wikipedia article on brainfuck if you are& interested.
+// Check out the wikipedia article on brainfuck if you are interested.
 
 use wasm_bindgen::prelude::*;
 extern crate console_error_panic_hook;
