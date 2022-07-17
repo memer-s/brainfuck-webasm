@@ -17,22 +17,22 @@ It defaults at:
 `)
 
 // Setting code to one of these, randomly.
-const programs = [
-   `[Hello world]
+const programs = {
+   "Hello world!": `[Hello world]
 ++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.`,
-   `[Sierpinski triangle, (c) 2016 Daniel B. Cristofani]
+   "Sierpinski triangle": `[Sierpinski triangle, (c) 2016 Daniel B. Cristofani]
 ++++++++[>+>++++<<-]>++>>+<[-[>>+<<-]+>>]>+[-<<<[->[+[-]+>++>>>-<<]<[<]>>++++++[<<+++++>>-]+<<++.[-]<<]>.>+[>>]>+]`
-]
+}
 
-document.getElementById("code").value = programs[Math.floor(Math.random()*programs.length)]
-
-
-let savedPrograms = localStorage.getItem("programs");
+document.getElementById("code").value = programs[Object.keys(programs)[Math.floor(Math.random()*Object.keys(programs).length)]]
+console.log(programs[Object.keys(programs)[Math.floor(Math.random()*Object.keys(programs).length)]])
+let savedPrograms = JSON.parse(localStorage.getItem("programs"));
 
 // Check if there exists any saved programs.
 if(savedPrograms) {
    // TODO
    // Storage
+   savedPrograms
 }
 // Initializes brainfuck.
 // Setting instance to window for ease of access in the js console.
@@ -49,7 +49,7 @@ function button(id, func) {
 }
 
 // Memory array for rendering memory.
-let mem = new Uint8Array(256, 0);
+let mem = new Uint8Array(32, 0);
 let pcVal = 0; 
 
 // Step button.
@@ -189,8 +189,13 @@ window.addEventListener("keydown", (k) => {
             document.getElementById("comp").click();
             k.preventDefault();
             break;
-         case "s":
+         case "a":
             document.getElementById("start").click();
+            k.preventDefault();
+            break;
+         case "s":
+            savedPrograms["untitled"] = document.getElementById("code").value
+            localStorage.setItem("programs", JSON.stringify(savedPrograms))
             k.preventDefault();
             break;
          case " ":
