@@ -24,16 +24,63 @@ const programs = {
 ++++++++[>+>++++<<-]>++>>+<[-[>>+<<-]+>>]>+[-<<<[->[+[-]+>++>>>-<<]<[<]>>++++++[<<+++++>>-]+<<++.[-]<<]>.>+[>>]>+]`
 }
 
-document.getElementById("code").value = programs[Object.keys(programs)[Math.floor(Math.random()*Object.keys(programs).length)]]
+const name = Object.keys(programs)[Math.floor(Math.random()*Object.keys(programs).length)]
+document.getElementById("code").value = programs[name]
+document.getElementById("name").value = name
 console.log(programs[Object.keys(programs)[Math.floor(Math.random()*Object.keys(programs).length)]])
-let savedPrograms = JSON.parse(localStorage.getItem("programs"));
+let savedPrograms;
+try {
+   savedPrograms = JSON.parse(localStorage.getItem("programs"));
+}
+catch {
+   savedPrograms = undefined;
+}
 
 // Check if there exists any saved programs.
-if(savedPrograms) {
-   // TODO
-   // Storage
-   savedPrograms
+function getSaves() {
+   let dd = document.getElementById("sel")
+   dd.innerHTML = ''
+
+   let el = document.createElement("option");
+   if(savedPrograms) {
+      // TODO
+      // Storage
+
+      if(Object.keys(savedPrograms).length > 0)
+         document.getElementById("load-program").style = 'display: block;'
+
+      Object.keys(savedPrograms).forEach((n) => {
+         let el = document.createElement("option");
+         el.innerText = n
+         el.value = n
+         dd.append(el);
+      })
+   }
 }
+getSaves();
+
+function loadProgram() {
+   document.getElementById("code").value = savedPrograms[document.getElementById("sel").value]
+   document.getElementById("name").value = document.getElementById("sel").value
+}
+document.getElementById("load-button").addEventListener("click", loadProgram)
+
+let oldIndex = 0;
+window.next = () => {
+   let str = document.getElementById("code").value;
+   for(let i = oldIndex; i < str.length; i++) {
+      if(str[i]=="+") {oldIndex = i+1; break};
+      if(str[i]=="-") {oldIndex = i+1; break};
+      if(str[i]==".") {oldIndex = i+1; break};
+      if(str[i]==",") {oldIndex = i+1; break};
+      if(str[i]=="[") {oldIndex = i+1; break};
+      if(str[i]=="]") {oldIndex = i+1; break};
+      if(str[i]==">") {oldIndex = i+1; break};
+      if(str[i]=="<") {oldIndex = i+1; break};
+   }
+   return oldIndex
+}
+
 // Initializes brainfuck.
 // Setting instance to window for ease of access in the js console.
 window.BF = BF;
@@ -194,9 +241,10 @@ window.addEventListener("keydown", (k) => {
             k.preventDefault();
             break;
          case "s":
-            savedPrograms["untitled"] = document.getElementById("code").value
-            localStorage.setItem("programs", JSON.stringify(savedPrograms))
             k.preventDefault();
+            savedPrograms[document.getElementById("name").value.toString()] = document.getElementById("code").value
+            localStorage.setItem("programs", JSON.stringify(savedPrograms))
+            getSaves();
             break;
          case " ":
             document.getElementById("sp").click();
