@@ -20,6 +20,9 @@ textarea {
    border-radius: 10px;
    box-sizing: border-box;
    width: 100%;
+   white-space: pre;
+   overflow-wrap: normal;
+   overflow-x: scroll;
 }
 
 textarea:focus {
@@ -71,6 +74,21 @@ button {
    font-size: 15px;
    font-weight: 700;
    cursor: pointer;
+}
+
+#code-location {
+   height: 0;
+   top: 33.4px;
+   left: 43px;
+   padding: 0 2px 1px 0;
+   position: relative;
+   display: inline;
+   font-family: 'IBM Plex Mono';
+   font-size: 18px;
+   color: white;
+   background-color: #5344FF;
+   box-sizing:border-box;
+   border-radius: 4px;
 }
 
 #comp {

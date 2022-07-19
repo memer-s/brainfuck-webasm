@@ -208,6 +208,9 @@ const renderMemory = () => {
       document.getElementById("memory").append(cont);
    }
    moveProgramCounter(pcVal%(ROWS*Math.floor(numberOfCells)))
+
+   // TODO
+   // Change the +32 at to dynamic value based on how many cells are rendered
    document.getElementById("loc").innerText = offset+" - "+(offset+32)
 }
 
