@@ -82,7 +82,7 @@ button {
    left: 43px;
    padding: 0 2px 1px 0;
    position: relative;
-   display: inline;
+   display:inline;
    font-family: 'IBM Plex Mono';
    font-size: 18px;
    color: white;
