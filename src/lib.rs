@@ -25,7 +25,7 @@ pub fn from_arr_to_ascii(arr: &[u8]) -> String {
 
 // -------------------------------
 
-// This function runs after initialization. 
+/// This function runs after initialization. 
 // It reroutes the Rust errors to the Javascript console
 #[wasm_bindgen]
 pub fn run() {

@@ -36,6 +36,9 @@ catch {
    savedPrograms = undefined;
 }
 
+const editorDebug = true;
+if(editorDebug) document.getElementById("editor-test").style = 'display: block;';
+
 // Check if there exists any saved programs.
 function getSaves() {
    let dd = document.getElementById("sel")

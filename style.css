@@ -185,14 +185,14 @@ code, pre {
 #cout {
    white-space: pre-wrap;
    box-sizing: border-box;
+   font-family: 'IBM Plex Mono';
+   box-shadow: 0px 16px 20px rgba(0, 0, 0, 0.1);
+   background-color: #151515;
    font-size: 18px;
    padding: 12px 14px;
    color: #d3d3d3;
-   font-family: 'IBM Plex Mono';
    width: 100%;
    min-height: 140px;
-   background-color: #151515;
-   box-shadow: 0px 16px 20px rgba(0, 0, 0, 0.1);
    margin-bottom: 70px;
    overflow-x: auto;
    color-scheme: dark;
@@ -237,4 +237,16 @@ ul {
    margin-bottom: 30px;
 }
 
-
+#editor-test {
+   display: block;
+   box-shadow: 0px 16px 20px rgba(0, 0, 0, 0.03);
+   border-radius: 10px;
+   margin-bottom: 30px;
+   white-space: pre-wrap;
+   box-sizing: border-box;
+   font-family: 'IBM Plex Mono';
+   box-shadow: 0px 16px 20px rgba(0, 0, 0, 0.1);
+   background-color: #151515;
+   font-size: 18px;
+   padding: 12px 14px;
+}
