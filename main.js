@@ -1,5 +1,6 @@
 // WebAssembly boilerplate.
 import init, {BF, run} from "./pkg/brainfuck.js";
+import editorInit from "./editor.js";
 await init();
 
 run();
@@ -35,9 +36,6 @@ try {
 catch {
    savedPrograms = undefined;
 }
-
-const editorDebug = true;
-if(editorDebug) document.getElementById("editor-test").style = 'display: block;';
 
 // Check if there exists any saved programs.
 function getSaves() {
