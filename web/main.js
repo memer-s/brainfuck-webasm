@@ -1,6 +1,5 @@
 // WebAssembly boilerplate.
 import init, {BF, run} from "../pkg/brainfuck.js";
-import editorInit from "../editor.js";
 import {initEditor, hightlightCharacter} from "./editor.js"
 await init();
 
