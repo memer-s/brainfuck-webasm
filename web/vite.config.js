@@ -5,5 +5,8 @@ export default defineConfig({
 		fs: {
 			allow: ['..']
 		}
+	},
+	preview: {
+		port: 8080
 	}
 })
