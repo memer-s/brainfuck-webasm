@@ -144,10 +144,6 @@ button("stop", () => {
    document.getElementById("start").style = 'display: inline;';
    document.getElementById("stop").style = 'display: none;';
 
-   if() {
-      editor.removeDecorations()
-   }
-
    clearInterval(intervalId);
 
    running = false;
