@@ -1,9 +1,12 @@
 // WebAssembly boilerplate.
-import init, {BF, run} from "./pkg/brainfuck.js";
-import editorInit from "./editor.js";
+import init, {BF, run} from "../pkg/brainfuck.js";
+import editorInit from "../editor.js";
+import {initEditor, hightlightCharacter} from "./editor.js"
 await init();
 
 run();
+
+window.high = hightlightCharacter;
 
 console.log(`Hello,
 if you wish to change the stepsize for both the start function and step function,
@@ -14,7 +17,7 @@ It defaults at:
 - runstepsize = 10000 (How many steps the start button moves per iteration)
 - delay = 5 (The delay between execution of the start button iterations)
 - timeDebug = true (Displays how long it took to execute a step/steps)
-- bf (The brainfuck instance)
+- bf (The brainfuck instance)1
 `)
 
 // Setting code to one of these, randomly.
@@ -26,39 +29,13 @@ const programs = {
 }
 
 const name = Object.keys(programs)[Math.floor(Math.random()*Object.keys(programs).length)]
-document.getElementById("code").value = programs[name]
 document.getElementById("name").value = name
+
+const editor = initEditor(document.querySelector("#code-container"), programs[name]);
+
+window.editor = editor;
+
 console.log(programs[Object.keys(programs)[Math.floor(Math.random()*Object.keys(programs).length)]])
-let savedPrograms;
-try {
-   savedPrograms = JSON.parse(localStorage.getItem("programs"));
-}
-catch {
-   savedPrograms = undefined;
-}
-
-// Check if there exists any saved programs.
-function getSaves() {
-   let dd = document.getElementById("sel")
-   dd.innerHTML = ''
-
-   let el = document.createElement("option");
-   if(savedPrograms) {
-      // TODO
-      // Storage
-
-      if(Object.keys(savedPrograms).length > 0)
-         document.getElementById("load-program").style = 'display: block;'
-
-      Object.keys(savedPrograms).forEach((n) => {
-         let el = document.createElement("option");
-         el.innerText = n
-         el.value = n
-         dd.append(el);
-      })
-   }
-}
-getSaves();
 
 function loadProgram() {
    document.getElementById("code").value = savedPrograms[document.getElementById("sel").value]
@@ -68,7 +45,7 @@ document.getElementById("load-button").addEventListener("click", loadProgram)
 
 let oldIndex = 0;
 window.next = () => {
-   let str = document.getElementById("code").value;
+   let str = editor.value;
    for(let i = oldIndex; i < str.length; i++) {
       if(str[i]=="+") {oldIndex = i+1; break};
       if(str[i]=="-") {oldIndex = i+1; break};
@@ -99,12 +76,14 @@ function button(id, func) {
 // Memory array for rendering memory.
 let mem = new Uint8Array(32, 0);
 let pcVal = 0; 
+let programCounterMarker;
 
 // Step button.
 button("sp", () => {
    console.time(`Execution time for step`)
    window.bf.steps(window.stepsize);
    let json = JSON.parse(window.bf.get_state());
+   programCounterMarker = hightlightCharacter(editor, json.program_counter, programCounterMarker?._decorationIds)
    console.timeEnd(`Execution time for step`)
    mem = json.memory;
    // Modulus 30000 so it does not overflow.
@@ -116,7 +95,7 @@ button("sp", () => {
 // button("print", () => window.bf.print())
 // button("step", () => window.bf.step())
 button("comp", () => {
-   window.bf.set_code(document.getElementById("code").value)
+   window.bf.set_code(editor.getValue())
    document.cookie = 'saved=[{"title": "Untitled","program": '+document.getElementById("code").value+'};'
    let json = JSON.parse(window.bf.get_state());
    pcVal = json.memory_counter%30000;
@@ -152,6 +131,7 @@ button("start", () => {
 
          let json = JSON.parse(window.bf.get_state());
          mem = json.memory;
+         programCounterMarker = hightlightCharacter(editor, json.program_counter, programCounterMarker?._decorationIds)
 
          // Modulus 30000 so it does not overflow.
          pcVal = json.memory_counter%30000;
@@ -164,6 +144,10 @@ button("start", () => {
 button("stop", () => {
    document.getElementById("start").style = 'display: inline;';
    document.getElementById("stop").style = 'display: none;';
+
+   if() {
+      editor.removeDecorations()
+   }
 
    clearInterval(intervalId);
 
@@ -248,7 +232,6 @@ window.addEventListener("keydown", (k) => {
             k.preventDefault();
             savedPrograms[document.getElementById("name").value.toString()] = document.getElementById("code").value
             localStorage.setItem("programs", JSON.stringify(savedPrograms))
-            getSaves();
             break;
          case " ":
             document.getElementById("sp").click();

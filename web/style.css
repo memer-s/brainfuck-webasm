@@ -10,6 +10,16 @@ body {
    flex-direction: column;
 }
 
+.monaco-editor, .monaco-editor .overflow-guard {
+   border-radius: 10px;
+}
+
+.program-counter {
+   background-color: #b6cfff;
+   border-radius: 4px;
+   outline: 2px solid #94a3ff;
+}
+
 textarea {
    font-family: 'IBM Plex Mono';
    padding: 10px 10px;
